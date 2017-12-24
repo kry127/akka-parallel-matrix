@@ -43,17 +43,17 @@ object BuyerQueue {
 }
 
 class BuyerQueue(system: ActorSystem, printer: ActorRef, cheeseDispenser: ActorRef, capacity: Int) extends Actor {
-  /**
-    * Процедура, отвечающая за создание терпеливых и нетерпеливых покупателей
-    * Следит за тем, чтобы было как минимум два терпеливых и два нетерпеливых
-    */
+  // неявный объект сортировки, который предписывает сортировать покупателей таким образом, чтобы более приоритетным был покупатель с минимальным временем прихода
   implicit object Ord extends Ordering[(Int, Boolean, ActorRef)] {
     def compare(x: (Int, Boolean, ActorRef), y :(Int, Boolean, ActorRef)): Int = y._1.compare(x._1)
   }
   val buyers = new mutable.PriorityQueue[(Int, Boolean, ActorRef)]() // Создаём очередь с приоритетами. Неявная сортировка указана выше
   var time: Int = 0 // каждый новый вызов generate увеличивает генерируемое время на единицу
 
-
+  /**
+    * Процедура, отвечающая за создание терпеливых и нетерпеливых покупателей
+    * Следит за тем, чтобы было как минимум два терпеливых и два нетерпеливых
+    */
   def generate() : Unit = {
     time = time + 1
     val constTime = time // чтобы не было фейлов, делаем время константным
