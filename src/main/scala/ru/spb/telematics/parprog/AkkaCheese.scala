@@ -20,7 +20,7 @@ import scala.util.Random
   */
 object AkkaCheese extends App {
   val queueSize = 10; // определяем размер очереди покупателей
-  val system: ActorSystem = ActorSystem("parallelMatrixSolver") // создаём акторную систему
+  val system: ActorSystem = ActorSystem("CheeseWorld") // создаём акторную систему
 
   val printer = system.actorOf(Props[Printer], "printer") // актор печатающий информацию о покупке сыра
   val dispenser = system.actorOf(Props(new CheeseDispenser(system)), "dispenser") // актор сырный отдел
